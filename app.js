@@ -27,9 +27,9 @@
 //     divide(firstNumber, secondNumber);
 // });
 
-let operandOne = prompt('enter your first number');
-let operator = prompt('enter your operator +-*/');
-let operandTwo = prompt('enter your second number');
+// let operandOne = prompt('enter your first number');
+// let operator = prompt('enter your operator +-*/');
+// let operandTwo = prompt('enter your second number');
 
 function add(firstNumber, secondNumber){
     console.log(+firstNumber + +secondNumber);
@@ -65,4 +65,4 @@ function operate(operandOne, operandTwo, operator) {
     }
 };
 
-operate(operandOne, operandTwo, operator);
+// operate(operandOne, operandTwo, operator);
