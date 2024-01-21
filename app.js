@@ -1,68 +1,180 @@
-// let addBtn = document.querySelector('#add');
-// let subtractBtn = document.querySelector('#subtract');
-// let multiplyBtn = document.querySelector('#multiply');
-// let divideBtn = document.querySelector('#divide');
-
-// addBtn.addEventListener('click', () => {
-//     let firstNumber = prompt('enter first number');
-//     let secondNumber = prompt('enter second number');
-//     add(firstNumber, secondNumber);
-// });
-
-// subtractBtn.addEventListener('click', () => {
-//     let firstNumber = prompt('enter first number');
-//     let secondNumber = prompt('enter second number');
-//     subtract(firstNumber, secondNumber);
-// });
-
-// multiplyBtn.addEventListener('click', () => {
-//     let firstNumber = prompt('enter first number');
-//     let secondNumber = prompt('enter second number');
-//     multiply(firstNumber, secondNumber);
-// });
-
-// divideBtn.addEventListener('click', () => {
-//     let firstNumber = prompt('enter first number');
-//     let secondNumber = prompt('enter second number');
-//     divide(firstNumber, secondNumber);
-// });
-
-// let operandOne = prompt('enter your first number');
-// let operator = prompt('enter your operator +-*/');
-// let operandTwo = prompt('enter your second number');
-
 function add(firstNumber, secondNumber){
     console.log(+firstNumber + +secondNumber);
+    displayValue = +firstNumber + +secondNumber;
+    displayContent.textContent = displayValue;
 };
 
 function subtract(firstNumber, secondNumber){
     console.log(+firstNumber - +secondNumber);
+    displayValue = +firstNumber - +secondNumber;
+    displayContent.textContent = displayValue;
 };
 
 function multiply(firstNumber, secondNumber){
     console.log(+firstNumber * +secondNumber);
+    displayValue = +firstNumber * +secondNumber;
+    displayContent.textContent = displayValue;
 };
 
 function divide(firstNumber, secondNumber){
     console.log(+firstNumber / +secondNumber);
+    displayValue = +firstNumber / +secondNumber;
+    displayContent.textContent = displayValue;
 };
 
 
-function operate(operandOne, operandTwo, operator) {
-    switch(operator) {
+function operate(firstOperand, secondOperand, currentOperator) {
+    switch(currentOperator) {
         case '+':
-        add(operandOne, operandTwo);
+        add(firstOperand, secondOperand);
         break;
         case '-':
-        subtract(operandOne, operandTwo);
+        subtract(firstOperand, secondOperand);
         break;
         case '*':
-        multiply(operandOne, operandTwo);
+        multiply(firstOperand, secondOperand);
         break;
         case '/':
-        divide(operandOne, operandTwo);
+        divide(firstOperand, secondOperand);
         break;
     }
 };
 
-// operate(operandOne, operandTwo, operator);
+let displayValue = '';
+let currentOperator = '';
+let firstOperand = '';
+let secondOperand = '';
+
+let displayContent = document.querySelector('#displaytext');
+
+const numbersBtn = document.querySelectorAll('.numbers');
+
+const addBtn = document.querySelector('#add');
+const subtractBtn = document.querySelector('#subtract');
+const multiplyBtn = document.querySelector('#multiply');
+const divideBtn = document.querySelector('#divide');
+const clearBtn = document.querySelector('#clear');
+
+const equalBtn = document.querySelector('#equal');
+
+
+// listens to any click on a number and displays the numbers pressed
+numbersBtn.forEach( number => {
+    number.addEventListener('click', () => {
+        let currentNumber = number.textContent;
+        display(currentNumber);
+    });
+});
+
+// every time a number is pressed, it gets concatenated and assigned to the variable displayValue
+function display(currentNumber) {
+    displayValue += currentNumber;
+    displayContent.textContent = displayValue;
+};
+
+// four event handlers that listen to the '+' '-' '*' '/' buttons, 
+// if the input is not empty it assigns the displayValue to firstOperand and then executes clearDisplay()
+// sets variable currentOperator to its corresponding operator
+addBtn.addEventListener('click', () => {
+    
+    if (displayValue && !firstOperand) {
+    currentOperator = '+';
+    firstOperand = displayValue
+    } else if (!secondOperand && displayValue) {
+        secondOperand = displayValue;
+        operate(firstOperand, secondOperand, currentOperator);
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '+';
+    } else {
+        alert('ERROR')
+    }
+    clearDisplay();
+});
+
+subtractBtn.addEventListener('click', () => {
+    
+    if (displayValue && !firstOperand) {
+    currentOperator = '-';
+    firstOperand = displayValue
+    } else if (!secondOperand && displayValue) {
+        secondOperand = displayValue;
+        operate(firstOperand, secondOperand, currentOperator);
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '-';
+    } else {
+        alert('ERROR')
+    }
+    clearDisplay();
+});
+
+multiplyBtn.addEventListener('click', () => {
+    
+    if (displayValue && !firstOperand) {
+    currentOperator = '*';
+    firstOperand = displayValue
+    } else if (!secondOperand && displayValue) {
+        secondOperand = displayValue;
+        operate(firstOperand, secondOperand, currentOperator);
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '*';
+    } else {
+        alert('ERROR')
+    }
+    clearDisplay();
+});
+
+divideBtn.addEventListener('click', () => {
+    
+    if (displayValue && !firstOperand) {
+    currentOperator = '/';
+    firstOperand = displayValue
+    } else if (!secondOperand && displayValue) {
+        secondOperand = displayValue;
+        operate(firstOperand, secondOperand, currentOperator);
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '/';
+    } else {
+        alert('ERROR')
+    }
+    clearDisplay();
+});
+
+
+//--------------------------------------------------------------------------------------------------------------
+
+
+// event handler that listens to the '=' button and executes equate()
+equalBtn.addEventListener('click', () => {
+    equate();
+});
+
+clearBtn.addEventListener('click', () => {
+    hardClear();
+});
+
+//sets the current displayValue to empty string
+function clearDisplay() {
+    displayValue = '';
+};
+
+// resets every piece of data
+function hardClear() {
+    displayValue = '';
+    firstOperand = '';
+    secondOperand = '';
+    currentOperator = '';
+    displayContent.textContent = displayValue;
+}
+
+// since displayValue was set to empty string after an operator is pressed,
+// the value of displayValue now would be equal to the second number
+// assigns displayValue to secondOperand
+// executes operate()
+function equate(){
+    secondOperand = displayValue;
+    operate(firstOperand, secondOperand, currentOperator);
+};
