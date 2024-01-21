@@ -1,27 +1,26 @@
 function add(firstNumber, secondNumber){
-    console.log(+firstNumber + +secondNumber);
     displayValue = +firstNumber + +secondNumber;
+    displayValue = parseFloat(displayValue.toFixed(7));
     displayContent.textContent = displayValue;
-};
+}
 
 function subtract(firstNumber, secondNumber){
-    console.log(+firstNumber - +secondNumber);
     displayValue = +firstNumber - +secondNumber;
+    displayValue = parseFloat(displayValue.toFixed(7));
     displayContent.textContent = displayValue;
-};
+}
 
 function multiply(firstNumber, secondNumber){
-    console.log(+firstNumber * +secondNumber);
     displayValue = +firstNumber * +secondNumber;
+    displayValue = parseFloat(displayValue.toFixed(7));
     displayContent.textContent = displayValue;
-};
+}
 
 function divide(firstNumber, secondNumber){
-    console.log(+firstNumber / +secondNumber);
     displayValue = +firstNumber / +secondNumber;
+    displayValue = parseFloat(displayValue.toFixed(7));
     displayContent.textContent = displayValue;
-};
-
+}
 
 function operate(firstOperand, secondOperand, currentOperator) {
     switch(currentOperator) {
@@ -45,9 +44,10 @@ let currentOperator = '';
 let firstOperand = '';
 let secondOperand = '';
 
-let displayContent = document.querySelector('#displaytext');
+let displayContent = document.querySelector('#display');
 
 const numbersBtn = document.querySelectorAll('.numbers');
+const operatorsBtn = document.querySelectorAll('.operators');
 
 const addBtn = document.querySelector('#add');
 const subtractBtn = document.querySelector('#subtract');
@@ -57,28 +57,66 @@ const clearBtn = document.querySelector('#clear');
 
 const equalBtn = document.querySelector('#equal');
 
+window.addEventListener('keydown', function(e){
+    const key = document.querySelector(`button[data-key='${e.key}']`);
+    key.click();
+});
 
 // listens to any click on a number and displays the numbers pressed
 numbersBtn.forEach( number => {
     number.addEventListener('click', () => {
-        let currentNumber = number.textContent;
-        display(currentNumber);
+        if (firstOperand && secondOperand) {
+            hardClear();
+            let currentNumber = number.textContent;
+            display(currentNumber);
+        } else {
+            let currentNumber = number.textContent;
+            display(currentNumber);
+        }
+        
     });
 });
 
+
+
+
 // every time a number is pressed, it gets concatenated and assigned to the variable displayValue
 function display(currentNumber) {
-    displayValue += currentNumber;
-    displayContent.textContent = displayValue;
-};
+    let decimalCount;
+
+    if (displayValue.includes('.')) {
+        // If it contains a dot, count the occurrences
+        decimalCount = displayValue.split('.').length - 1;
+    }
+
+    if (currentNumber == '.' && decimalCount > 0) {
+        return;
+    } else {
+        // Check if the total characters would exceed 10 after concatenating
+        if ((displayValue + currentNumber).length > 10) {
+            return;
+        }
+
+        if (displayValue=='' && currentNumber=='.'){
+            displayValue += '0' + currentNumber;
+            displayContent.textContent = displayValue;
+        } else {
+            displayValue += currentNumber;
+            displayContent.textContent = displayValue;
+        }
+        
+    }
+}
 
 // four event handlers that listen to the '+' '-' '*' '/' buttons, 
 // if the input is not empty it assigns the displayValue to firstOperand and then executes clearDisplay()
 // sets variable currentOperator to its corresponding operator
 addBtn.addEventListener('click', () => {
-    
+    addBtn.classList.add('selected');
+
     if (displayValue && !firstOperand) {
     currentOperator = '+';
+    displayContent.textContent = displayValue;
     firstOperand = displayValue
     } else if (!secondOperand && displayValue) {
         secondOperand = displayValue;
@@ -86,6 +124,12 @@ addBtn.addEventListener('click', () => {
         firstOperand = displayValue;
         secondOperand = '';
         currentOperator = '+';
+        displayContent.textContent = displayValue;
+    } else if (displayValue && firstOperand && secondOperand){
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '+';
+        displayContent.textContent = displayValue;
     } else {
         alert('ERROR')
     }
@@ -93,9 +137,11 @@ addBtn.addEventListener('click', () => {
 });
 
 subtractBtn.addEventListener('click', () => {
-    
+    subtractBtn.classList.add('selected');
+
     if (displayValue && !firstOperand) {
     currentOperator = '-';
+    displayContent.textContent = displayValue;
     firstOperand = displayValue
     } else if (!secondOperand && displayValue) {
         secondOperand = displayValue;
@@ -103,6 +149,12 @@ subtractBtn.addEventListener('click', () => {
         firstOperand = displayValue;
         secondOperand = '';
         currentOperator = '-';
+        displayContent.textContent = displayValue;
+    } else if (displayValue && firstOperand && secondOperand){
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '-';
+        displayContent.textContent = displayValue;
     } else {
         alert('ERROR')
     }
@@ -110,9 +162,11 @@ subtractBtn.addEventListener('click', () => {
 });
 
 multiplyBtn.addEventListener('click', () => {
-    
+    multiplyBtn.classList.add('selected');
+
     if (displayValue && !firstOperand) {
     currentOperator = '*';
+    displayContent.textContent = displayValue;
     firstOperand = displayValue
     } else if (!secondOperand && displayValue) {
         secondOperand = displayValue;
@@ -120,6 +174,12 @@ multiplyBtn.addEventListener('click', () => {
         firstOperand = displayValue;
         secondOperand = '';
         currentOperator = '*';
+        displayContent.textContent = displayValue;
+    } else if (displayValue && firstOperand && secondOperand){
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '*';
+        displayContent.textContent = displayValue;
     } else {
         alert('ERROR')
     }
@@ -127,9 +187,11 @@ multiplyBtn.addEventListener('click', () => {
 });
 
 divideBtn.addEventListener('click', () => {
-    
+    divideBtn.classList.add('selected');
+
     if (displayValue && !firstOperand) {
     currentOperator = '/';
+    displayContent.textContent = displayValue;
     firstOperand = displayValue
     } else if (!secondOperand && displayValue) {
         secondOperand = displayValue;
@@ -137,6 +199,12 @@ divideBtn.addEventListener('click', () => {
         firstOperand = displayValue;
         secondOperand = '';
         currentOperator = '/';
+        displayContent.textContent = displayValue;
+    } else if (displayValue && firstOperand && secondOperand){
+        firstOperand = displayValue;
+        secondOperand = '';
+        currentOperator = '/';
+        displayContent.textContent = displayValue;
     } else {
         alert('ERROR')
     }
@@ -149,6 +217,7 @@ divideBtn.addEventListener('click', () => {
 
 // event handler that listens to the '=' button and executes equate()
 equalBtn.addEventListener('click', () => {
+    equalBtn.classList.add('selected');
     equate();
 });
 
@@ -167,7 +236,7 @@ function hardClear() {
     firstOperand = '';
     secondOperand = '';
     currentOperator = '';
-    displayContent.textContent = displayValue;
+    displayContent.textContent = '0';
 }
 
 // since displayValue was set to empty string after an operator is pressed,
@@ -180,7 +249,7 @@ function equate(){
     } else {
         secondOperand = displayValue;
         if (secondOperand == '0') {
-            alert('this is not allowed')
+            displayContent.textContent = "no";
         } else {
             operate(firstOperand, secondOperand, currentOperator);
         }

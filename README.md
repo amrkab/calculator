@@ -1,1 +1,1 @@
-# calculator
+This project demonstrates fundamental knowledge of HTML, CSS & Javascript.
