@@ -175,6 +175,16 @@ function hardClear() {
 // assigns displayValue to secondOperand
 // executes operate()
 function equate(){
-    secondOperand = displayValue;
-    operate(firstOperand, secondOperand, currentOperator);
+    if ((!firstOperand && !secondOperand) || !displayValue) {
+        alert('ERROR')
+    } else {
+        secondOperand = displayValue;
+        if (secondOperand == '0') {
+            alert('this is not allowed')
+        } else {
+            operate(firstOperand, secondOperand, currentOperator);
+        }
+        
+    }
+    
 };
